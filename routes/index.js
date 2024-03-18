@@ -30,5 +30,6 @@ router.post('/doorEvents', authenticateToken, async (req, res) => {
 
 );
 
+//
 
 module.exports = router;

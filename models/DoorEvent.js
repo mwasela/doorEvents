@@ -9,16 +9,25 @@ const DoorEvent = sequelize.define('blk_doors_events', {
     },
     blk_event_user_id: {
         type: DataTypes.STRING
+       
     },
     blk_event_door_state: {
-        type: DataTypes.STRING
+        type: DataTypes.INTEGER
+      
     },
-    blk_event_door_id: {
+    blk_event_device_id: {
         type: DataTypes.STRING
+       
     },
     blk_event_timestamp: {
         type: DataTypes.STRING
     },
+    blk_event_direction: {
+        type: DataTypes.STRING
+    },
+    blk_event_doorlocation: {
+        type: DataTypes.STRING
+    }
  
 }, {
     timestamps: false

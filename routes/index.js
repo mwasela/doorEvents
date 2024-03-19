@@ -9,20 +9,26 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/doorEvents', authenticateToken, async (req, res) => {
-  const user_id = req.body_user_id;
-  const door_state = req.body.door_state;
-  const timestamp = req.body.time; // Assuming time is the key for timestamp
-  const door_id = req.body.door_id;
 
+  console.log(req.body);
+  const blk_doorEvent_user_id = req.body.user_id;
+  const blk_doorEvent_door_state = req.body.door_state;
+  const blk_doorEvent_timestamp = req.body.timestamp; // Assuming time is the key for timestamp
+  //const blk_doorEvent_door_id = req.body.door_id;
+  const blk_doorEvent_direction = req.body.direction;
+  const blk_dooorEvent_deviceid = req.body.device_id;
+  const blk_dooorEvent_doorlocation = req.body.doorlocation;
   try {
     const doorEvent = await DoorEvent.create({
-      user_id: user_id,
-      door_state: door_state,
-      timestamp: timestamp,
-      door_id: door_id
+      blk_event_user_id: blk_doorEvent_user_id,
+      blk_event_door_state: blk_doorEvent_door_state,
+      blk_event_timestamp: blk_doorEvent_timestamp,
+      blk_event_direction: blk_doorEvent_direction,
+      blk_event_device_id: blk_dooorEvent_deviceid,
+      blk_event_doorlocation: blk_dooorEvent_doorlocation,
     });
 
-    res.status(201).json({ message: 'User created successfully', doorEvent: doorEvent });
+    res.status(201).json({ message: 'Event created successfully', doorEvent });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

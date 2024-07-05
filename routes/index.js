@@ -38,20 +38,95 @@ router.post('/doorEvents', authenticateToken, async (req, res) => {
 
 //
 
-router.get("/doorEvents", async (req, res) => {
-    try {
-        const doorEvents = await DoorEvent.findAll({
-            order: [['blk_event_timestamp', 'DESC']], // Order by blk_event_timestamp
-            limit: 100
-        });
+// router.get("/doorEvents", async (req, res) => {
 
-        return res.status(200).json(doorEvents);
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: "Internal Server Error" });
-    }
+//     try {
+//         const doorEvents = await DoorEvent.findAll({
+//             order: [['blk_event_timestamp', 'DESC']], // Order by blk_event_timestamp
+//             limit: 100
+//         });
+
+//         return res.status(200).json(doorEvents);
+//     } catch (error) {
+//         console.error(error);
+//         return res.status(500).json({ message: "Internal Server Error" });
+//     }
+// });
+
+// router.get('/doorEvents', async (req, res) => {
+//   try {
+//     // Extracting query parameters
+//     const pageSize = parseInt(req.query.pageSize) || 10; // Default pageSize to 10 if not provided
+//     const page = parseInt(req.query.page) || 1; // Default page to 1 if not provided
+//     const current = req.query.current; // 'current' can be used for additional logic if needed
+
+//     // Calculate the offset for pagination
+//     const offset = (page - 1) * pageSize;
+
+//     // Fetch door events with pagination
+//     const doorEvents = await DoorEvent.findAll({
+//       order: [['blk_event_timestamp', 'DESC']], // Order by blk_event_timestamp
+//       limit: pageSize,
+//       offset: offset
+//     });
+
+//     // Include pagination information in the response
+//     const totalItems = await DoorEvent.count(); // Count total number of items
+//     const totalPages = Math.ceil(totalItems / pageSize);
+
+//     const response = {
+//       page,
+//       pageSize,
+//       totalItems,
+//       totalPages,
+//       current, // Include 'current' in the response if needed
+//       doorEvents
+//     };
+
+//     return res.status(200).json(response);
+//   } catch (error) {
+//     console.error(error);
+//     return res.status(500).json({ message: 'Internal Server Error' });
+//   }
+// });
+
+
+router.get('/doorEvents', async (req, res) => {
+  try {
+    // Extracting query parameters
+    const pageSize = parseInt(req.query.pageSize) || 10; // Default pageSize to 10 if not provided
+    const current = parseInt(req.query.current) || 1; // Default current to 1 if not provided
+
+    // Calculate the offset for pagination
+    const offset = (current - 1) * pageSize;
+
+    // Fetch door events with pagination
+    const doorEvents = await DoorEvent.findAll({
+      order: [['blk_event_timestamp', 'DESC']], // Order by blk_event_timestamp
+      limit: pageSize,
+      offset: offset
+    });
+
+    // Include pagination information in the response
+    const totalItems = await DoorEvent.count(); // Count total number of items
+    const totalPages = Math.ceil(totalItems / pageSize);
+
+    const response = {
+      current,
+      pageSize,
+      totalItems,
+      totalPages,
+      doorEvents
+    };
+
+    return res.status(200).json(response);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
 });
 
+module.exports = router;
 
 
 module.exports = router;

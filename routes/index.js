@@ -38,4 +38,20 @@ router.post('/doorEvents', authenticateToken, async (req, res) => {
 
 //
 
+router.get("/doorEvents", async (req, res) => {
+    try {
+        const doorEvents = await DoorEvent.findAll({
+            order: [['blk_event_timestamp', 'DESC']], // Order by blk_event_timestamp
+            limit: 100
+        });
+
+        return res.status(200).json(doorEvents);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+});
+
+
+
 module.exports = router;
